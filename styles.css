@@ -1,0 +1,12 @@
+body{
+}
+img {
+	height:25%;
+	width: 100%;
+}
+.navbar {
+	background-color: white;
+}
+ul {
+	list-style-type: none;
+}
