@@ -14,9 +14,10 @@
 				<img src="http://manonthelam.com/wp-content/uploads/2012/01/its-more-fun-in-the-philippines-logo-department-of-tourism.jpg?b2f876" alt="">
 				<nav class='navbar'> 
 					 <ul class="nav navbar-nav">
+					 	<li><a href="index.php">Home</a></li>
 				        <li><a href="happening.php">Happenings</a></li>
-				        <li><a href="adventure.php">Adventure Planner</a></li>
-				        <li><a href="road.php">Plan a Road Trip</a></li>
+				        <!-- <li><a href="adventure.php">Adventure Planner</a></li> -->
+				        <li><a href="calendar.php">Calendar</a></li>
 				        <li><a href="friends.php">Friends</a></li>
 				        <li><a href="contact.php">Contact Us</a></li>
 				    </ul>
