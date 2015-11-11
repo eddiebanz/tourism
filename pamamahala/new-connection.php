@@ -23,7 +23,6 @@ function fetch_all($query)
 	global $connection;
 	$result = $connection->query($query);
 	//while($row = $result->fetch_assoc())
-
 	if ($result->num_rows > 0){
 		while($row = $result->fetch_assoc()) { 
 			$data[] = $row;	
@@ -38,7 +37,6 @@ function fetch_record($query)
 	global $connection;
 	$result = $connection->query($query);
 	return $result->fetch_assoc();
-	//return $result->fetch_assoc();
 }
 
 //use to run INSERT/DELETE/UPDATE, queries that don't return a value
