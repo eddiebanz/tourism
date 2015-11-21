@@ -1,12 +1,13 @@
-body{
+* {
+	background-color: black;
+	color:white;
 }
+
 img {
 	height:25%;
 	width: 100%;
 }
-.navbar {
-	background-color: white;
-}
+
 ul {
 	list-style-type: none;
 }

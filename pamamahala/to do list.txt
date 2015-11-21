@@ -1,0 +1,5 @@
+calendar
+	calendar_date_generator === create calendar
+	kalendaryo === set none specific events
+	mga_kalendaryo === calendar class
+	kalendaryo_ngayon === link events with calendar
