@@ -1,16 +1,20 @@
 <?php
 	require('util_header.php');
-	require('new-connection.php');
+	// require('new-connection.php');
 	require('mga_kalendaryo.php');
 
 	$calendar = new calendar;
 
-	private function getDateByReference($event){
-		// $query2 = "SELECT juliandate FROM `pistahan` WHERE eventid = (SELECT _id FROM `events` WHERE reference = '".$event."')";
-		return  fetch_record("SELECT juliandate FROM `pistahan` WHERE eventid = (SELECT _id FROM `events` WHERE reference = '".$event."')");
+	function getDateByReference($RefEventId, $MainEvent){
+		$query = "SELECT juliandate FROM `pistahan` WHERE event_id = '".$RefEventId."'";
+		echo $query."<br>";
+		$result = fetch_record($query);
+		var_dump($result);
+		die;
+		return fetch_record("SELECT juliandate FROM `pistahan` WHERE eventid = (SELECT _id FROM `events` WHERE reference = '".$event."')");
 	}
 
-	private function insertToEventTable($eventName, $eventDate, $duration){
+	function insertToEventTable($eventName, $eventDate, $duration){
 
 		$calendar->insert_pistahan($eventDate, $eventName);
 
@@ -25,7 +29,7 @@
 		return;
 	}
 
-	private function getDayOfWeek($day){
+	function getDayOfWeek($day){
 		switch ($day) {
 			case 'MONDAY':
 				return 1;
@@ -62,39 +66,44 @@
 	$result = fetch_all($query);
 
 	foreach ($result as $key => $value) {
+		// initializa event date
+		$eventDate = getdate();
 		if ($value['reference'] != 'YEAR' && $value['reference'] != 'MONTH') {
-			$typeOfEvent = substr($value['reference'],2);
+			$typeOfEvent = substr($value['reference'],0,2);
 			// this is the part where the event is based on another event or holiday
-			if 	($typeOfEvent == 'e9' ){ 
-				$eventDate = getDateByReference($value['reference'])
-			}
+			if 	($typeOfEvent == 'e9' ){	$eventDate = getDateByReference($value['reference'],$value['_id']); }
 			
 			// reference is not a valid event but a calendar period
 			else {
 				if ($value['ref_code'] == 'LAST'){
-					$$eventDate = fecth_record("SELECT max(juliandate) FROM fiscalcalendar WHERE fmonth = ". $value['fmonth']." and fyear = ". $value['fyear']. " and dayofweek = ".getDayOfWeek($value['dayofweek']).")";
+					$getJulianDate = "SELECT max(juliandate) FROM fiscalcalendar WHERE fmonth = ". $value['fmonth']. " and fyear = ". $value['fyear']. " and dayofweek = ". getDayOfWeek($value['dayofweek']);	
+					$eventDate = fecth_record($getJulianDate);
 				}
 			}
 
 			// determine the duration
-			if ($value['ref_code'] == 'WEEK'){
-				$setDuration = 7;
+			switch ($value['ref_code']) {
+				case 'WEEK':
+					$setDuration = 7;
+					break;
+				case 'WEEKEND':
+					$setDuration = 3;
+					break;
 			}
-			if ($value['ref_code'] ==  'WEEKEND'){
-				$setDuration = 3
-			}
-			if ($typeOfEvent == 'e9'){
-				$setDuration = $value['ref_code'];
-			}
+
+			if ($typeOfEvent == 'e9'){	$setDuration = $value['ref_code'];	}
+			
 			if (intval($value['endMonth']) > 0 ){
 				// construct ending date
 				if ($value['startMonth'] > $value['endMonth']){	$endyear = $processingYear+1;	}
 				
 				// get duration
-				$setDuration = GregorianToJD($value['startMonth'], value['startDay'], strval($processingYear)) - GregorianToJD($value['startMonth'], value['startDay'], endyear);
+				$setDuration = GregorianToJD($value['startMonth'], $value['startDay'], strval($processingYear)) - GregorianToJD($value['startMonth'], $value['startDay'], endyear);
 			}
 
-			insertToEventTable($value, JDToGregorian($eventDate), $setDuration );
+			var_dump($eventdate); echo "<br>"; die;
+
+			insertToEventTable($value['_id'], JDToGregorian($eventDate), $setDuration );
 		}
 	}
 ?>

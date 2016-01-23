@@ -4,7 +4,7 @@
 	foreach ($_POST as $key => $value) {
 		if ( strlen($value) > 0) {
 			$jdate = $value;
-			$jmonth = date("m",strtotime($value);
+			$jmonth = date("m",strtotime($value));
 			$jday = date('j',strtotime($value));
 			$jyear = date('Y',strtotime($value));
 			$GregorianToJD = GregorianToJD($jmonth, $jday, $jyear);
